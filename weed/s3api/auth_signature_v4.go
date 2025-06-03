@@ -723,17 +723,21 @@ func extractHostHeader(r *http.Request) string {
 	// If X-Forwarded-Host is set, use that as the host.
 	// If X-Forwarded-Port is set, use that too to form the host.
 	if forwardedHost != "" {
+		println("DEBUG: X-Forwarded-Host is non empty:", forwardedHost)
 		extractedHost := forwardedHost
 		host, port, err := net.SplitHostPort(extractedHost)
 		if err == nil {
+			println("DEBUG: X-Forwarded-Host contained both host and port:", host, port)
 			extractedHost = host
 			if forwardedPort == "" {
 				forwardedPort = port
 			}
 		}
 		if !isDefaultPort(r.URL.Scheme, forwardedPort) {
+			println("DEBUG: Port ", forwardedPort, " is not default for scheme ", r.URL.Scheme)
 			extractedHost = net.JoinHostPort(extractedHost, forwardedPort)
 		}
+		println("DEBUG: Resulting extractedHost is ", extractedHost)
 		return extractedHost
 	} else {
 		// Go http server removes "host" from Request.Header
