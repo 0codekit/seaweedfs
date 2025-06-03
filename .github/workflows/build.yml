@@ -28,5 +28,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ghcr.io/0codekit/0ck-deploy:dev
+          tags: ghcr.io/0codekit/seaweedfs
           context: ./docker
+          file: ./docker/Dockerfile.go_build
